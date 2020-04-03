@@ -1,5 +1,6 @@
 from google.cloud import datastore
 import messaging
+import match
 
 # Instantiates a client
 datastore_client = datastore.Client()
@@ -44,6 +45,10 @@ def savePerson(phone, param):
             message = f"Ok. You'll get a text when someone around you can help. Stay safe!"
         else:
             message = f"Ok. You'll get a text when someone around you needs help. Stay safe!"
+
+        person match.getNearbyPerson()
+        if person is not None:
+            message = f"Found someone!"
     
     datastore_client.put(person)
     messaging.sendMessage(phone, message)
