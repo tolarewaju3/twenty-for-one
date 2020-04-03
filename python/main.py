@@ -51,5 +51,5 @@ def savePerson(phone, param):
             message = f"Found someone!"
     
     datastore_client.put(person)
-    messaging.sendMessage(phone, message)
+    #messaging.sendMessage(phone, message)
     return message
