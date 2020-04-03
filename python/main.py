@@ -46,8 +46,8 @@ def savePerson(phone, param):
         else:
             message = f"Ok. You'll get a text when someone around you needs help. Stay safe!"
 
-        person = match.getNearbyPerson()
-        if person is not None:
+        nearbyPerson = match.getNearbyPerson(param)
+        if nearbyPerson is not None:
             message = f"Found someone!"
     
     datastore_client.put(person)
