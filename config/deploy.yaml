@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twenty-for-one-deployment
+  labels:
+    app: twenty-for-one
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: twenty-for-one
+  template:
+    metadata:
+      labels:
+        app: twenty-for-one
+    spec:
+      containers:
+      - name: twenty-for-one
+        image: trussell2671/twenty-for-one
+        ports:
+        - containerPort: 8080
