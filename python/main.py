@@ -1,6 +1,5 @@
 from google.cloud import datastore
-from twilio.rest import Client
-import os
+import messaging
 
 # Instantiates a client
 datastore_client = datastore.Client()
@@ -47,17 +46,5 @@ def savePerson(phone, param):
             message = f"Ok. You'll get a text when someone around you needs help. Stay safe!"
     
     datastore_client.put(person)
-    sendMessage(phone, message)
+    messaging.sendMessage(phone, message)
     return message
-
-def sendMessage(phone, message):
-    account_sid = os.environ.get('TWILIO_ACCOUNT_SID', '')
-    auth_token = os.environ.get('TWILIO_AUTH_TOKEN', '')
-    client = Client(account_sid, auth_token)
-
-    message = client.messages \
-        .create(
-            body=message,
-            from_='+15123127461',
-            to=phone
-        )
