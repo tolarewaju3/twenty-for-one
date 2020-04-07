@@ -1,17 +1,14 @@
 from google.cloud import datastore
 import messaging
+import signup
 import match
+import delivery
 
-# Instantiates a client
 datastore_client = datastore.Client()
 
-# The kind for the new entity
 kind = 'Person'
 
-def findNearbyPeople(request):
-    phone = '000-000-0000'
-    param = 'hi'
-
+def start(request):
     request_json = request.get_json()
     
     if request.args and 'From' in request.args:
@@ -20,36 +17,31 @@ def findNearbyPeople(request):
     if request.args and 'Body' in request.args:
         param = request.args.get('Body')
     
-    return savePerson(phone, param)
+    return twentyForOne(phone, param)
    
 
-def savePerson(phone, param):
-    message = ''
+def twentyForOne(phone, param):
     person_key = datastore_client.key(kind, phone)
-
     person = datastore_client.get(person_key)
 
     if person is None:
-        person = datastore.Entity(key=person_key)
-        message = f'Welcome to Twenty for One! We help get free groceries (under $20) to older adults at high risk of COVID-19. One more death is too many. What is your name?'
+        signup.createNewPerson(person_key, phone)
+        
     elif "name" not in person:
-        person['name'] = param
-        message = f"Nice to meet you, " + param + "! " + "Type 1 if you're an older adult. Type 2 if you're a younger adult willing to help"
+        signup.saveName(person, param, phone)
+
     elif "age_group" not in person:
-        person['age_group'] = param
-        message = f"Great! What's your zip code?"
+        signup.saveAge(person, param, phone);
+
     elif "zip" not in person:
-        person['zip'] = param
+        signup.saveZip(person, param, phone);
+        match.findMatch(person, param, phone)
+    elif "match" in person and "delivery" not in person:
+        if person['age_group'] == '2' and param.lower() == 'yes':
+            delivery.setUpDelivery(person, phone)
+    elif "delivery" in person:
+        delivery.confirmDelivery(person, param, phone)
 
-        if person['age_group'] == '1':
-            message = f"Ok. You'll get a text when someone around you can help. Stay safe!"
-        else:
-            message = f"Ok. You'll get a text when someone around you needs help. Stay safe!"
+    return "OK"
 
-        person = match.getNearbyPerson()
-        if person is not None:
-            message = f"Found someone!"
-    
-    datastore_client.put(person)
-    messaging.sendMessage(phone, message)
-    return message
+
