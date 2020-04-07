@@ -8,9 +8,6 @@ datastore_client = datastore.Client()
 kind = 'Person'
 
 def findNearbyPeople(request):
-    phone = '000-000-0000'
-    param = 'hi'
-
     request_json = request.get_json()
     
     if request.args and 'From' in request.args:
@@ -38,15 +35,12 @@ def savePerson(phone, param):
         saveAge(person, param, phone);
 
     elif "zip" not in person:
-        saveZip(person, param, phone)
+        findMatch(person, param, phone)
     elif "match" in person and "delivery" not in person:
-        if person['age_group'] == '2':
-            if param.lower() == 'yes':
-                olderAdult = datastore_client.get(person['match'])
-                setUpDelivery(person, olderAdult, phone)
+        if person['age_group'] == '2' and param.lower() == 'yes':
+            setUpDelivery(person, phone)
     elif "delivery" in person:
         confirmDelivery(person, param, phone)
-
 
     return message
 
@@ -66,7 +60,7 @@ def saveAge(person, param, phone):
     messaging.sendMessage(phone, f"Great! What's your zip code?")
     datastore_client.put(person)
 
-def saveZip(person, param, phone):
+def findMatch(person, param, phone):
     person['zip'] = param
 
     nearbyPerson = match.getNearbyPerson(param, person['age_group'])
@@ -74,7 +68,6 @@ def saveZip(person, param, phone):
 
     person['confirmed'] = True
     datastore_client.put(person)
-
 
 def sendMatchMessages(person, nearbyPerson, phone):
     if person['age_group'] == '1':
@@ -91,9 +84,8 @@ def sendMatchMessages(person, nearbyPerson, phone):
     else:
         messaging.sendMessage(phone,f"Ok. You'll get a text when someone around you needs help. Stay safe!")
 
-def setUpDelivery(person, olderAdult, phone):
-    olderAdult['match'] = person.key
-                ## do we need this?
+def setUpDelivery(person, phone):
+    olderAdult = datastore_client.get(person['match'])
 
     delivery_key = datastore_client.key('Delivery', phone)
     delivery = datastore.Entity(key=delivery_key)
