@@ -17,6 +17,7 @@ def getNearbyPerson(zip, age_group):
 	if nearbyZipCodes is not None and len(nearbyZipCodes) > 0:
 		query = datastore_client.query(kind=kind)
 		query.add_filter('match', '=', None)
+		query.add_filter('confirmed', '=', True)
 
 		if age_group == '1':
 			query.add_filter('age_group', '=', '2')

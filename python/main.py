@@ -1,7 +1,6 @@
 from google.cloud import datastore
 import messaging
 import signup
-import match
 import delivery
 
 datastore_client = datastore.Client()
@@ -17,7 +16,7 @@ def start(request):
     if request.args and 'Body' in request.args:
         param = request.args.get('Body')
     
-    return twentyForOne(phone, param)
+    return twentyForOne(phone, param.strip())
    
 
 def twentyForOne(phone, param):
@@ -35,10 +34,8 @@ def twentyForOne(phone, param):
 
     elif "zip" not in person:
         signup.saveZip(person, param, phone);
-        match.findMatch(person, param, phone)
     elif "match" in person and "delivery" not in person:
-        if person['age_group'] == '2' and param.lower() == 'yes':
-            delivery.setUpDelivery(person, phone)
+        delivery.setUpDelivery(person, param, phone)
     elif "delivery" in person:
         delivery.confirmDelivery(person, param, phone)
 

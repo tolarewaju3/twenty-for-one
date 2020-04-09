@@ -6,24 +6,37 @@ datastore_client = datastore.Client()
 
 kind = 'Delivery'
 
-def setUpDelivery(person, phone):
-    olderAdult = datastore_client.get(person['match'])
+def setUpDelivery(person, param, phone):
+    if person['age_group'] == '2' and param.lower() == 'yes':
+        olderAdult = datastore_client.get(person['match'])
 
-    delivery_key = datastore_client.key(kind, phone)
-    delivery = datastore.Entity(key=delivery_key)
-    delivery['create_date'] = datetime.datetime.utcnow()
-    delivery['helper'] = person['name']
-    delivery['needed_help'] = olderAdult['name']
-    delivery['zip'] = olderAdult['zip']
+        delivery_key = datastore_client.key(kind, phone)
+        delivery = datastore.Entity(key=delivery_key)
+        delivery['create_date'] = datetime.datetime.utcnow()
+        delivery['helper'] = person['name']
+        delivery['needed_help'] = olderAdult['name']
+        delivery['zip'] = olderAdult['zip']
 
-    person['delivery'] = delivery.key
-    olderAdult['delivery'] = delivery.key
+        person['delivery'] = delivery.key
+        olderAdult['delivery'] = delivery.key
 
-    datastore_client.put_multi([olderAdult, delivery, person])
+        datastore_client.put_multi([olderAdult, delivery, person])
 
-    messaging.sendMessage(phone,f"Great! Contact " + olderAdult['name'] + " at " + olderAdult.key.name + "." + "\n\n1. Remember to wash your hands before delivery\n2. Text 'DONE' after you deliver so we can post about you\n3. Thanks again! ")
+        messaging.sendMessage(phone,f"Great! Contact " + olderAdult['name'] + " at " + olderAdult.key.name + " to ask for their grocery list and address." + "\n\n1. Remember to wash your hands before delivery\n2. Text 'DONE' after you deliver so we can post about you\n3. Thanks again! ")
 
-    messaging.sendMessage(olderAdult.key.name, f"We found someone near you that can help! Their name is " + person['name'] + ". " + "When they contact you, send your address and grocery list. We buy your first $20, so put the most important items first :)")
+        messaging.sendMessage(olderAdult.key.name, f"We found someone that can help! " + person['name'] + " will contact you from " + person.key.name + "." + " Then you can send your address and grocery list. We buy your first $20, so put the most important items first :)")
+    elif person['age_group'] == '2' and param.lower() == 'no':
+        olderAdult = datastore_client.get(person['match'])
+        olderAdult['match'] = None;
+
+        person['match'] = None;
+        person['confirmed'] = False;
+
+        messaging.sendMessage(phone,f"Got it! Thanks for letting us know. Stay safe!")
+
+        datastore_client.put_multi([olderAdult, person])
+
+
 
 def confirmDelivery(person, param, phone):
     if person['age_group'] == '2':
