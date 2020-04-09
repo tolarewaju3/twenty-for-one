@@ -1,78 +1,50 @@
 from google.cloud import datastore
-import os
+import messaging
+import zipcode
 
-# Instantiates a client
 datastore_client = datastore.Client()
 
-# The kind for the new entity
-kind = 'NearbyZipCode'
+kind = 'Person'
 
-ENDPOINT = "https://www.zipcodeapi.com/rest"
+def findMatch(person, zip, phone):
+    nearbyPerson = getNearbyPerson(zip, person['age_group'])
+    sendMatchMessages(person, nearbyPerson, phone)
 
-API_KEY = os.environ.get('ZIP_API_KEY', '')
 
-MILE_RADIUS = "5"
+def getNearbyPerson(zip, age_group):
+	nearbyZipCodes = zipcode.getNearbyZipCodes(zip)
 
-def getNearbyPerson(zip):
-	nearbyZipCodes = getNearbyZipCodes(zip)
+	if nearbyZipCodes is not None and len(nearbyZipCodes) > 0:
+		query = datastore_client.query(kind=kind)
+		query.add_filter('match', '=', None)
+		query.add_filter('confirmed', '=', True)
 
-	if len(nearbyZipCodes) > 0:
-		query = datastore_client.query(kind='Person')
+		if age_group == '1':
+			query.add_filter('age_group', '=', '2')
+		else:
+			query.add_filter('age_group', '=', '1')
+
 		results = list(query.fetch())
-		people = list(filter(lambda person: person['zip'] in nearbyZipCodes, results))
-		print(people[1])
-		return people[1]
+		nearbyPeople = list(filter(lambda person: person['zip'] in nearbyZipCodes, results))
 
-def getNearbyZipCodes(zip):
-	nearby_zip_codes = getNearbyZipCodesFromDatabase(zip)
+		if len(nearbyPeople) > 0: 
+			return nearbyPeople[0]
 
-	if len(nearby_zip_codes) == 0:
-		getNearbyZipCodesFromAPI(zip)
-	else: 
-		print("Zip Codes Found in DB")
-		return nearby_zip_codes
+def sendMatchMessages(person, nearbyPerson, phone):
+    if person['age_group'] == '1':
+        messaging.sendMessage(phone, f"Ok. You'll get a text when someone around you can help. Stay safe!")
+        
+        if nearbyPerson is not None:
+            messaging.sendMessage(nearbyPerson.key.name, f"We found someone in your area that needs help!\n\nType 'Yes' to confirm. If you're feeling sick, please type 'No'.")
+            createMatch(nearbyPerson, person)
 
+    elif nearbyPerson is not None:
+        messaging.sendMessage(phone,f"We found someone in your area that needs help!\n\nType 'Yes' to confirm. If you're feeling sick, please type 'No'.")
+        createMatch(nearbyPerson, person)
+    else:
+        messaging.sendMessage(phone,f"Ok. You'll get a text when someone around you needs help. Stay safe!")
 
-def getNearbyZipCodesFromDatabase(zip):
-	zip_key = datastore_client.key(kind, zip)
-	zip = datastore_client.get(zip_key)
-
-	if zip is None:
-		print('No zip. Save zip to db')
-		return []
-	else: 
-		zipcodes = zip["nearby_zip_codes"]
-		return zipcodes
-
-def getNearbyZipCodesFromAPI(zip):
-	zip_api_url = getZipCodeURL(zip)
-
-	r = requests.get(url = zip_api_url) 
-	data = r.json()
-
-	if r.status_code == 200:
-		nearby_zip_codes = data["zip_codes"]
-		if len(nearby_zip_codes) > 0:
-			saveNearbyZipCodesToDB(zip, nearby_zip_codes)
-	else:
-		return 'Failure on web request'
-
-def saveNearbyZipCodesToDB(zip, nearby_zip_codes):
-	print(nearby_zip_codes)
-
-	nearby_zip_objects = []
-
-	for x in nearby_zip_codes:
-		zip_key = datastore_client.key(kind, x)
-		nearbyZip = datastore.Entity(key=zip_key)
-		nearbyZip['nearby_zip_codes'] = nearby_zip_codes
-		nearby_zip_objects.append(nearbyZip)
-
-	datastore_client.put_multi(nearby_zip_objects)
-
-
-def getZipCodeURL(zip):
-	RESOURCE = "radius.json/%s/%s/miles?minimal" % (zip, MILE_RADIUS)
-	URL = "%s/%s/%s" % (ENDPOINT, API_KEY, RESOURCE)
-
-	return URL
+def createMatch(nearbyPerson, person):
+	nearbyPerson['match'] = person.key
+	person['match'] = nearbyPerson.key
+	datastore_client.put_multi([nearbyPerson, person])
