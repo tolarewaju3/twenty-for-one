@@ -16,6 +16,7 @@ spec:
     spec:
       containers:
       - name: twenty-for-one
-        image: trussell2671/twenty-for-one
+        image: gcr.io/twenty-for-one/twenty-for-one
+        imagePullPolicy: "Always"
         ports:
         - containerPort: 8080
