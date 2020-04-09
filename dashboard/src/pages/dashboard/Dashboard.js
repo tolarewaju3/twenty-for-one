@@ -3,7 +3,6 @@ import {
   Grid
 } from "@material-ui/core";
 
-
 // styles
 import useStyles from "./styles";
 
@@ -14,6 +13,11 @@ import PageTitle from "../../components/PageTitle";
 import Table from "./components/Table/Table";
 import BigStat from "./components/BigStat/BigStat";
 
+// Datastore
+const {Datastore} = require('@google-cloud/datastore');
+const datastore = new Datastore();
+const query = datastore.createQuery('Delivery');
+var deliveries;
 
 export default function Dashboard(props) {
   var classes = useStyles();
@@ -34,7 +38,7 @@ export default function Dashboard(props) {
             noBodyPadding
             bodyClass={classes.tableWidget}
           >
-            <Table data={mock.table} />
+            <Table data={deliveries} />
           </Widget>
         </Grid>
       </Grid>
@@ -42,3 +46,7 @@ export default function Dashboard(props) {
   );
 }
 
+async function queryDb() {
+  deliveries = await datastore.runQuery(query);
+}
+queryDb();
