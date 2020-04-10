@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
 import {
   Grid
 } from "@material-ui/core";
@@ -16,13 +17,28 @@ import PageTitle from "../../components/PageTitle";
 import Table from "./components/Table/Table";
 import BigStat from "./components/BigStat/BigStat";
 
-export default function Dashboard(props) {
-  var classes = useStyles();
+class Dashboard extends Component{
+    constructor(props) {
+      super(props);
+      this.state = {deliveries: mock.table};
+    }
 
-  return (
-    <>
-      <PageTitle title="Deliveries"/>
-      <Grid container spacing={4}>
+    componentDidMount(){
+      axios.get('https://us-central1-twenty-for-one.cloudfunctions.net/getDeliveries')
+        .then(response => {
+          this.setState({ deliveries: response.data });
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+
+    }
+
+    render(){
+        return(
+          <>
+              <PageTitle title="Twenty for One"/>
+              <Grid container spacing={4}>
         {mock.bigStat.map(stat => (
           <Grid item md={4} sm={6} xs={12} key={stat.product}>
             <BigStat {...stat} />
@@ -30,26 +46,25 @@ export default function Dashboard(props) {
         ))}
         <Grid item xs={12}>
           <Widget
-            title="Support Requests"
+            title="Deliveries"
             upperTitle
             noBodyPadding
-            bodyClass={classes.tableWidget}
+            disableWidgetMenu
           >
-            <Table data={mock.table} />
+            <Table data={this.state.deliveries} />
           </Widget>
         </Grid>
       </Grid>
-    </>
-  );
-}
+          </>
 
-function getDeliveries(){
-  axios.get(`https://us-central1-twenty-for-one.cloudfunctions.net/getDeliveries`)
-      .then(res => {
-        //const persons = res.data;
-        //this.setState({ persons });
-        console.log(res.data)
-      })
-}
+        )
+    }
 
-getDeliveries()
+
+} 
+
+
+export default Dashboard;
+
+
+
