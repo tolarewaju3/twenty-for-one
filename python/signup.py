@@ -15,7 +15,7 @@ def createNewPerson(person_key, phone):
 
 def saveName(person, param, phone):
     person['name'] = param
-    messaging.sendMessage(phone, f"Nice to meet you, " + param + "! " + "\n\nType 1 if you're an older adult.\nType 2 if you're a younger adult willing to help")
+    messaging.sendMessage(phone, f"Nice to meet you, " + param + "! " + "\n\nType '1' if you're an older adult.\nType '2' if you're a younger adult willing to help")
     datastore_client.put(person)
 
 def saveAge(person, param, phone):
@@ -26,7 +26,7 @@ def saveAge(person, param, phone):
         messaging.sendMessage(phone, f"Great! What's your zip code?")
         datastore_client.put(person)
     else:
-        messaging.sendMessage(phone, f"Oops! \n\nPlease type 1 if you're an older adult.\nType 2 if you're a younger adult willing to help")
+        messaging.sendMessage(phone, f"Oops! \n\nPlease type '1' if you're an older adult.\nType '2' if you're a younger adult willing to help")
 
 def saveZip(person, param, phone):
     isValidZip = re.search("^\d{5}$", param)
