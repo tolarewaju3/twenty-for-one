@@ -10,7 +10,7 @@ kind = 'Person'
 def createNewPerson(person_key, phone):
     person = datastore.Entity(key=person_key)
     person['match'] = None;
-    messaging.sendMessage(phone, f"Welcome to Twenty for One! We deliver $20 of free groceries to people at high risk of COVID-19. We believe that even one more death is too many. Anyway, what's your name?")
+    messaging.sendMessage(phone, f"Welcome to Twenty for One! We deliver $20 of free groceries to people at high risk of COVID-19. We believe that even one more death is too many. Anyway, what's your first name?")
     datastore_client.put(person)
 
 def saveName(person, param, phone):
