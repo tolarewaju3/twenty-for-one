@@ -6,18 +6,15 @@ import {
 // styles
 import useStyles from "./styles";
 
+// axios
+import axios from 'axios';
+
 // components
 import mock from "./mock";
 import Widget from "../../components/Widget";
 import PageTitle from "../../components/PageTitle";
 import Table from "./components/Table/Table";
 import BigStat from "./components/BigStat/BigStat";
-
-// Datastore
-const {Datastore} = require('@google-cloud/datastore');
-const datastore = new Datastore();
-const query = datastore.createQuery('Delivery');
-var deliveries;
 
 export default function Dashboard(props) {
   var classes = useStyles();
@@ -38,7 +35,7 @@ export default function Dashboard(props) {
             noBodyPadding
             bodyClass={classes.tableWidget}
           >
-            <Table data={deliveries} />
+            <Table data={mock.table} />
           </Widget>
         </Grid>
       </Grid>
@@ -46,7 +43,13 @@ export default function Dashboard(props) {
   );
 }
 
-async function queryDb() {
-  deliveries = await datastore.runQuery(query);
+function getDeliveries(){
+  axios.get(`https://us-central1-twenty-for-one.cloudfunctions.net/getDeliveries`)
+      .then(res => {
+        //const persons = res.data;
+        //this.setState({ persons });
+        console.log(res.data)
+      })
 }
-queryDb();
+
+getDeliveries()
