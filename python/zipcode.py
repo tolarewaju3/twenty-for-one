@@ -48,17 +48,21 @@ def saveNearbyZipCodesFromAPI(zip):
 def saveNearbyZipCodesToDB(zip, nearby_zip_codes):
 	nearby_zip_objects = []
 
-	for x in nearby_zip_codes:
-		zip_key = datastore_client.key(kind, x)
+	for nearby_zip_code in nearby_zip_codes:
+		zipCode = nearby_zip_code['zip_code']
+		zip_key = datastore_client.key(kind, zipCode)
 		nearbyZip = datastore.Entity(key=zip_key)
 		nearbyZip['nearby_zip_codes'] = nearby_zip_codes
+		nearbyZip['city'] = nearby_zip_code['city']
+		nearbyZip['state'] = nearby_zip_code['state']
+
 		nearby_zip_objects.append(nearbyZip)
 
 	datastore_client.put_multi(nearby_zip_objects)
 
 
 def getZipCodeURL(zip):
-	RESOURCE = "radius.json/%s/%s/miles?minimal" % (zip, MILE_RADIUS)
+	RESOURCE = "radius.json/%s/%s/miles" % (zip, MILE_RADIUS)
 	URL = "%s/%s/%s" % (ENDPOINT, API_KEY, RESOURCE)
 
 	return URL
