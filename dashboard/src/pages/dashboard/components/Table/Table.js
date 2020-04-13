@@ -1,4 +1,5 @@
 import React from "react";
+import TimeAgo from 'react-timeago'
 import {
   Table,
   TableRow,
@@ -24,10 +25,10 @@ export default function TableComponent({ data }) {
   return (
     <Table className="mb-0">
       <TableBody>
-        {data.map(({ create_date, done_date, helper, needed_help, zip }) => (
+        {data.map(({ done_date, helper, needed_help }) => (
           <TableRow>
-            <TableCell>{helper} delivered groceries to {needed_help} in {zip}</TableCell>
-            <TableCell>{done_date}</TableCell>
+            <TableCell>{helper} delivered groceries to {needed_help}</TableCell>
+            <TableCell><TimeAgo date={done_date}/></TableCell>
           </TableRow>
         ))}
       </TableBody>

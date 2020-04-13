@@ -29,7 +29,10 @@ class Dashboard extends Component{
       
       axios.get('https://us-central1-twenty-for-one.cloudfunctions.net/getDeliveries')
         .then(response => {
-          this.setState({ deliveries: response.data });
+          if(response.data.length != 0){
+            console.log(response.data);
+            this.setState({ deliveries: response.data });
+          }
         })
         .catch(function (error) {
           console.log(error);

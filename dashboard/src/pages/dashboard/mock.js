@@ -129,11 +129,14 @@ export default {
   ],
   table: [
     {
-    "create_date": "-",
-    "done_date": "-",
-    "helper": "Oluseun",
+    "done_date": "2020-04-10 15:10:00+00:00",
+    "helper": "Tyler",
     "needed_help": "TiOluwa",
-    "zip": "92661"
+    },
+    {
+    "done_date": "2020-04-13 15:10:00+00:00",
+    "helper": "Olu",
+    "needed_help": "TiOluwa",
     }
   ]
 };
