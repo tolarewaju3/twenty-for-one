@@ -23,7 +23,10 @@ class Dashboard extends Component{
       this.state = {deliveries: mock.table};
     }
 
+
+
     componentDidMount(){
+      
       axios.get('https://us-central1-twenty-for-one.cloudfunctions.net/getDeliveries')
         .then(response => {
           this.setState({ deliveries: response.data });
@@ -46,7 +49,7 @@ class Dashboard extends Component{
         ))}
         <Grid item xs={12}>
           <Widget
-            title="Deliveries"
+            title="Live Stream"
             upperTitle
             noBodyPadding
             disableWidgetMenu

@@ -129,9 +129,8 @@ export default {
   ],
   table: [
     {
-    "confirmed": 1,
-    "create_date": "2020-04-10 15:09:00+00:00",
-    "done_date": "2020-04-10 15:10:00+00:00",
+    "create_date": "-",
+    "done_date": "-",
     "helper": "Oluseun",
     "needed_help": "TiOluwa",
     "zip": "92661"

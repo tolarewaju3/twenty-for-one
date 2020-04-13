@@ -24,15 +24,10 @@ export default function TableComponent({ data }) {
   return (
     <Table className="mb-0">
       <TableBody>
-        {data.map(({ confirmed, create_date, done_date, helper, needed_help, zip }) => (
+        {data.map(({ create_date, done_date, helper, needed_help, zip }) => (
           <TableRow>
-            <TableCell>{confirmed}</TableCell>
-            <TableCell>{create_date}</TableCell>
+            <TableCell>{helper} delivered groceries to {needed_help} in {zip}</TableCell>
             <TableCell>{done_date}</TableCell>
-            <TableCell>{helper}</TableCell>
-            <TableCell>{needed_help}</TableCell>
-            <TableCell>{zip}</TableCell>
-
           </TableRow>
         ))}
       </TableBody>
