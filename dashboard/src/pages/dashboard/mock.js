@@ -32,7 +32,6 @@ export default {
         monthly: 4232,
         weekly: 1465,
         daily: 199,
-        percent: { value: 3.7, profit: false }
       },
       color: "primary",
       registrations: {

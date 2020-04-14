@@ -53,9 +53,9 @@ class Dashboard extends Component{
       const classes = this.props.myHookValue;
         return(
           <>
-              <PageTitle title="Twenty for One"/>
-              <Grid container spacing={4}>
-              <Grid item xs={12}>
+            <PageTitle title="Twenty for One"/>
+          <Grid container spacing={4}>
+          <Grid item xs={12}>
           <Widget
             title=""
             disableWidgetMenu
@@ -83,6 +83,12 @@ class Dashboard extends Component{
           >
             <Table data={this.state.deliveries} />
           </Widget>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography weight="medium">
+                <center>Contact Us @ help@twentyforone.com</center>
+              </Typography>
         </Grid>
       </Grid>
           </>
