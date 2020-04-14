@@ -18,6 +18,10 @@ export default function App() {
               window.location.href = '/privacy.html'; 
               return null;
             }}/>
+            <Route path='/terms' component={() => { 
+              window.location.href = '/terms.html'; 
+              return null;
+            }}/>
             <Route exact path="/" render={() => <Redirect to="/app/dashboard" />} />
             <Route path="/app/dashboard" component={Layout} />
         </Switch>

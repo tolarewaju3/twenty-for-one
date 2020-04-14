@@ -91,7 +91,7 @@ class Dashboard extends Component{
                 <center>Contact Us @ help@twentyforone.com</center>
               </Typography>
           <Typography weight="sm">
-                <center> <Link to="/privacy">Privacy Policy</Link></center>
+                <center> <Link to="/privacy">Privacy Policy</Link> | <Link to="/terms">Terms of Service</Link></center>
               </Typography>
         </Grid>
       </Grid>
