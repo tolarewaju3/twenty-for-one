@@ -11,6 +11,9 @@ import {
 // components
 import { Button } from "../../../../components/Wrappers";
 
+import { Typography } from "../../../../components/Wrappers";
+
+
 const states = {
   sent: "success",
   pending: "warning",
@@ -19,7 +22,6 @@ const states = {
 
 export default function TableComponent({ data }) {
   var keys = Object.keys(data[0]).map(i => i.toUpperCase());
-  console.log(keys)
   keys.shift(); // delete "id" key
 
   return (
@@ -27,8 +29,20 @@ export default function TableComponent({ data }) {
       <TableBody>
         {data.map(({ done_date, helper, needed_help }) => (
           <TableRow>
-            <TableCell>{helper} delivered groceries to {needed_help}</TableCell>
-            <TableCell><TimeAgo date={done_date}/></TableCell>
+            <TableCell>
+            {helper} delivered groceries to {needed_help}
+
+            </TableCell>
+            <TableCell align='right'>
+              <Button
+                color="success"
+                size="small"
+                className="px-2"
+                variant="contained"
+              >
+                <TimeAgo date={done_date}/>
+              </Button>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

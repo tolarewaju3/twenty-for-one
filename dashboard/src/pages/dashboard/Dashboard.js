@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
 import {
   Grid
 } from "@material-ui/core";
@@ -17,12 +16,22 @@ import PageTitle from "../../components/PageTitle";
 import Table from "./components/Table/Table";
 import BigStat from "./components/BigStat/BigStat";
 
+import { Typography } from "../../components/Wrappers";
+
+
+function withMyHook(Component) {
+  return function Dashboard(props) {
+    const myHookValue = useStyles();
+    return <Component {...props} myHookValue={myHookValue} />;
+  }
+}
+
 class Dashboard extends Component{
+
     constructor(props) {
       super(props);
       this.state = {deliveries: mock.table};
     }
-
 
 
     componentDidMount(){
@@ -41,10 +50,24 @@ class Dashboard extends Component{
     }
 
     render(){
+      const classes = this.props.myHookValue;
         return(
           <>
               <PageTitle title="Twenty for One"/>
               <Grid container spacing={4}>
+              <Grid item xs={12}>
+          <Widget
+            title=""
+            disableWidgetMenu
+          >
+
+          <Typography size="md" weight="medium">
+                Twenty for One delivers $20 of free groceries to people at high risk of dying from COVID-19. We believe even <strong>one more death is too many</strong>. To help out, text "Hi" to 512-312-7461.
+              </Typography>
+            
+
+          </Widget>
+        </Grid>
         {mock.bigStat.map(stat => (
           <Grid item md={4} sm={6} xs={12} key={stat.product}>
             <BigStat {...stat} />
@@ -56,6 +79,7 @@ class Dashboard extends Component{
             upperTitle
             noBodyPadding
             disableWidgetMenu
+            bodyClass={classes.tableWidget}
           >
             <Table data={this.state.deliveries} />
           </Widget>
@@ -70,7 +94,7 @@ class Dashboard extends Component{
 } 
 
 
-export default Dashboard;
+export default withMyHook(Dashboard);
 
 
 
