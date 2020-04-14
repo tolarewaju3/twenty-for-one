@@ -13,6 +13,9 @@ import { Button } from "../../../../components/Wrappers";
 
 import { Typography } from "../../../../components/Wrappers";
 
+import purple from '@material-ui/core/colors/purple';
+
+
 
 const states = {
   sent: "success",
@@ -31,6 +34,11 @@ export default function TableComponent({ data }) {
           <TableRow>
             <TableCell>
             {helper} delivered groceries to {needed_help}
+
+            </TableCell>
+
+            <TableCell>
+            <a href="https://www.twitter.com">TWEET THIS</a>
 
             </TableCell>
             <TableCell align='right'>
