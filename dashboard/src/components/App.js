@@ -14,6 +14,10 @@ export default function App() {
     <HashRouter>
       <div>
         <Switch>
+            <Route path='/privacy' component={() => { 
+              window.location.href = '/privacy.html'; 
+              return null;
+            }}/>
             <Route exact path="/" render={() => <Redirect to="/app/dashboard" />} />
             <Route path="/app/dashboard" component={Layout} />
         </Switch>

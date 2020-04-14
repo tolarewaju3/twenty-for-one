@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from "react-router-dom";
 import {
   Grid
 } from "@material-ui/core";
@@ -88,6 +89,9 @@ class Dashboard extends Component{
         <Grid item xs={12}>
           <Typography weight="medium">
                 <center>Contact Us @ help@twentyforone.com</center>
+              </Typography>
+          <Typography weight="sm">
+                <center> <Link to="/privacy">Privacy Policy</Link></center>
               </Typography>
         </Grid>
       </Grid>
