@@ -29,9 +29,14 @@ function withMyHook(Component) {
 
 class Dashboard extends Component{
 
+
     constructor(props) {
       super(props);
-      this.state = {deliveries: mock.table};
+      this.state = {
+        deliveries: mock.table,
+        helpers: [],
+        needing_help: []
+      };
     }
 
 
@@ -42,6 +47,29 @@ class Dashboard extends Component{
           if(response.data.length != 0){
             console.log(response.data);
             this.setState({ deliveries: response.data });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+
+      axios.get('https://us-central1-twenty-for-one.cloudfunctions.net/getPeople')
+        .then(response => {
+          if(response.data.length != 0){
+            console.log(response.data);
+
+            var h = response.data.filter(function(person) {
+              return person["age_group"] == 2;
+            });
+
+            var nh = response.data.filter(function(person) {
+              return person["age_group"] == 1;
+            });
+
+            this.setState({ 
+              helpers: h ,
+              needing_help : nh
+            });
           }
         })
         .catch(function (error) {
@@ -69,11 +97,61 @@ class Dashboard extends Component{
 
           </Widget>
         </Grid>
-        {mock.bigStat.map(stat => (
-          <Grid item md={4} sm={6} xs={12} key={stat.product}>
-            <BigStat {...stat} />
+
+          <Grid item md={4} sm={6} xs={12}>
+            
+            <Widget title='Deliveries' disableWidgetMenu upperTitle >
+
+              <div className={classes.totalValueContainer}>
+                <div className={classes.totalValue}>
+                <center>
+                  <Typography size="xxl" color="text" colorBrightness="secondary">
+                    {this.state.deliveries.length}
+                  </Typography>
+                  </center>
+                </div>
+              </div>
+
+            </Widget>
+
           </Grid>
-        ))}
+
+          <Grid item md={4} sm={6} xs={12}>
+            
+            <Widget title='Helpers' disableWidgetMenu upperTitle >
+
+              <div className={classes.totalValueContainer}>
+                <div className={classes.totalValue}>
+                <center>
+                  <Typography size="xxl" color="text" colorBrightness="secondary">
+                    {this.state.helpers.length}
+                  </Typography>
+                  </center>
+                </div>
+              </div>
+
+            </Widget>
+
+          </Grid>
+
+          <Grid item md={4} sm={6} xs={12}>
+            
+            <Widget title='Needing Help' disableWidgetMenu upperTitle >
+
+              <div className={classes.totalValueContainer}>
+                <div className={classes.totalValue}>
+                <center>
+                  <Typography size="xxl" color="text" colorBrightness="secondary">
+                    {this.state.needing_help.length}
+                  </Typography>
+                  </center>
+                </div>
+              </div>
+
+            </Widget>
+
+          </Grid>
+
         <Grid item xs={12}>
           <Widget
             title="Live Stream"
@@ -81,6 +159,7 @@ class Dashboard extends Component{
             noBodyPadding
             disableWidgetMenu
             bodyClass={classes.tableWidget}
+            headerClass={classes.widgetHeader}
           >
             <Table data={this.state.deliveries} />
           </Widget>

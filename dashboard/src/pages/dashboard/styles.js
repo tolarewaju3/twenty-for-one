@@ -112,4 +112,17 @@ export default makeStyles(theme => ({
     fontSize: "18px !important",
     marginLeft: theme.spacing(1),
   },
+  title: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    marginBottom: theme.spacing(1),
+  },
+  widgetHeader: {
+    padding: theme.spacing(3),
+    paddingBottom: theme.spacing(1),
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  }
 }));

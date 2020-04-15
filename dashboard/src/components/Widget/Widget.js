@@ -17,6 +17,7 @@ export default function Widget({
   title,
   noBodyPadding,
   bodyClass,
+  headerClass,
   disableWidgetMenu,
   header,
   ...props
@@ -30,7 +31,7 @@ export default function Widget({
   return (
     <div className={classes.widgetWrapper}>
       <Paper className={classes.paper} classes={{ root: classes.widgetRoot }}>
-        <div className={classes.widgetHeader}>
+        <div className={headerClass ? (headerClass) : classes.widgetHeader}>
           {header ? (
             header
           ) : (
