@@ -12,7 +12,7 @@ export default makeStyles(theme => ({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  widgetHeader: {
+  widgetHeaderCenterd: {
     padding: theme.spacing(3),
     paddingBottom: theme.spacing(1),
     display: "flex",

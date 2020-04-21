@@ -39,6 +39,10 @@ class Dashboard extends Component{
       };
     }
 
+    buildFeed(){
+      console.log('hi there')
+    }
+
 
     componentDidMount(){
       

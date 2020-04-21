@@ -15,6 +15,10 @@ import { Typography } from "../../../../components/Wrappers";
 
 import purple from '@material-ui/core/colors/purple';
 
+import {  TwitterShareButton, TwitterIcon } from 'react-share';
+
+import {Circle} from 'react-shapes';
+
 
 
 const states = {
@@ -25,6 +29,7 @@ const states = {
 
 export default function TableComponent({ data }) {
   var keys = Object.keys(data[0]).map(i => i.toUpperCase());
+
   keys.shift(); // delete "id" key
 
   return (
@@ -32,25 +37,30 @@ export default function TableComponent({ data }) {
       <TableBody>
         {data.map(({ done_date, helper, needed_help }) => (
           <TableRow>
+          <TableCell padding='none' align='center'>
+            &nbsp;&nbsp;<Circle r={8} fill={{color:'#12c457'}} />
+          </TableCell>
             <TableCell>
-            {helper} delivered groceries to {needed_help}
+            <div>
+
+
+             <Typography variant="h6" weight="bold"> {helper} delivered groceries to {needed_help}  </Typography>
+
+            </div>
+
+            <div>
+                        <Typography> Austin, TX • <TimeAgo date={done_date}/>  </Typography>
+
+            </div>
 
             </TableCell>
 
-            <TableCell>
-            <a href="https://www.twitter.com">TWEET THIS</a>
-
-            </TableCell>
             <TableCell align='right'>
-              <Button
-                color="success"
-                size="small"
-                className="px-2"
-                variant="contained"
-              >
-                <TimeAgo date={done_date}/>
-              </Button>
+                  <TwitterShareButton url="https://www.twentyforone.com" title={helper + " delivered groceries to " + needed_help + " using Twenty for One!"} children={<TwitterIcon size={32} round={true} />} />
+
+
             </TableCell>
+            
           </TableRow>
         ))}
       </TableBody>
