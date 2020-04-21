@@ -26,8 +26,6 @@ def setUpDelivery(person, param, phone):
 
         messaging.sendMessage(olderAdult.key.name, f"We found someone that can help! " + person['name'] + " will contact you from " + person.key.name + "." + " Then you can send your address and grocery list. We buy your first $20, so put the most important items first :)")
 
-        messaging.saveActivity(helper['name'] + " just confirmed that they can help get groceries to " + olderAdult["name"] + "!")
-
     elif person['age_group'] == '2' and param.lower() == 'no':
         olderAdult = datastore_client.get(person['match'])
         olderAdult['match'] = None;
@@ -62,7 +60,7 @@ def confirmDelivery(person, param, phone):
             messaging.sendMessage(phone, f"Great! Have a wonderful day, " + person['name'] + "!")
 
             helper = datastore_client.get(olderAdult['match'])
-            messaging.saveActivity(helper['name'] + " delivered groceries to " + olderAdult["name"])
+            messaging.saveActivity(helper['name'] + " delivered groceries to " + olderAdult["name"], "devliery")
 
         else:
             delivery['confirmed'] = False

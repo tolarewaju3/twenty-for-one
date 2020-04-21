@@ -22,12 +22,13 @@ def sendMessage(phone, message):
 		print(message)
 		print("")
 
-def saveActivity(message):
+def saveActivity(message, type):
     event_key = datastore_client.key(kind)
 
     event = datastore.Entity(key=event_key)
 
     event['message'] = message;
-    event['date'] = datetime.datetime.utcnow()
+    event['create_date'] = datetime.datetime.utcnow()
+    event['type'] = type;
 
     datastore_client.put(event)
