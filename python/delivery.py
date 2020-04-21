@@ -25,6 +25,9 @@ def setUpDelivery(person, param, phone):
         messaging.sendMessage(phone,f"Great! Contact " + olderAdult['name'] + " at " + olderAdult.key.name + " to ask for their grocery list and address." + "\n\n1. Remember to wash your hands before delivery\n2. Text 'DONE' after you deliver so we can post about you\n3. Thanks again! ")
 
         messaging.sendMessage(olderAdult.key.name, f"We found someone that can help! " + person['name'] + " will contact you from " + person.key.name + "." + " Then you can send your address and grocery list. We buy your first $20, so put the most important items first :)")
+
+        messaging.saveActivity(helper['name'] + " just confirmed that they can help get groceries to " + olderAdult["name"] + "!")
+
     elif person['age_group'] == '2' and param.lower() == 'no':
         olderAdult = datastore_client.get(person['match'])
         olderAdult['match'] = None;

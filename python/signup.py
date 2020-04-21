@@ -35,6 +35,6 @@ def saveZip(person, param, phone):
         person['confirmed'] = True;
         datastore_client.put(person)
         match.findMatch(person, param, phone)
-        messaging.pushToFeed(person['name'] + " signed up to help deliver groceries")
+        messaging.saveActivity(person['name'] + " signed up to help deliver groceries")
     else:
         messaging.sendMessage(phone, f"Oops! We need valid 5 digit zip code..")

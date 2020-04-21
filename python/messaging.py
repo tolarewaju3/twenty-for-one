@@ -1,8 +1,11 @@
+from google.cloud import datastore
 from twilio.rest import Client
 import datetime
 import os
 
-kind = 'Feed'
+kind = 'Event'
+
+datastore_client = datastore.Client()
 
 def sendMessage(phone, message):
 	account_sid = os.environ.get('TWILIO_ACCOUNT_SID', '')
@@ -20,11 +23,11 @@ def sendMessage(phone, message):
 		print("")
 
 def saveActivity(message):
-    feed_key = datastore_client.key(kind)
+    event_key = datastore_client.key(kind)
 
-    activity = datastore.Entity(key=feed_key)
+    event = datastore.Entity(key=event_key)
 
-    activity['message'] = message;
-    activity['date'] = datetime.datetime.utcnow()
+    event['message'] = message;
+    event['date'] = datetime.datetime.utcnow()
 
-    datastore_client.put(activity)
+    datastore_client.put(event)
