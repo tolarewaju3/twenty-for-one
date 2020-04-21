@@ -1,5 +1,8 @@
 from twilio.rest import Client
+import datetime
 import os
+
+kind = 'Feed'
 
 def sendMessage(phone, message):
 	account_sid = os.environ.get('TWILIO_ACCOUNT_SID', '')
@@ -15,3 +18,13 @@ def sendMessage(phone, message):
 		print("No Twilio Credentials. Printing message for phone: " + phone + "\n")
 		print(message)
 		print("")
+
+def saveActivity(message):
+    feed_key = datastore_client.key(kind)
+
+    activity = datastore.Entity(key=feed_key)
+
+    activity['message'] = message;
+    activity['date'] = datetime.datetime.utcnow()
+
+    datastore_client.put(activity)

@@ -57,6 +57,10 @@ def confirmDelivery(person, param, phone):
             delivery['confirmed'] = True
 
             messaging.sendMessage(phone, f"Great! Have a wonderful day, " + person['name'] + "!")
+
+            helper = datastore_client.get(olderAdult['match'])
+            messaging.saveActivity(helper['name'] + " delivered groceries to " + olderAdult["name"])
+
         else:
             delivery['confirmed'] = False
 
