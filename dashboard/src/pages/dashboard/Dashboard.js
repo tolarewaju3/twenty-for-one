@@ -15,7 +15,6 @@ import mock from "./mock";
 import Widget from "../../components/Widget";
 import PageTitle from "../../components/PageTitle";
 import Table from "./components/Table/Table";
-import BigStat from "./components/BigStat/BigStat";
 
 import { Typography } from "../../components/Wrappers";
 
@@ -48,7 +47,7 @@ class Dashboard extends Component{
       
       axios.get('https://us-central1-twenty-for-one.cloudfunctions.net/getDeliveries')
         .then(response => {
-          if(response.data.length != 0){
+          if(response.data.length !== 0){
             console.log(response.data);
             this.setState({ deliveries: response.data });
           }
@@ -59,15 +58,15 @@ class Dashboard extends Component{
 
       axios.get('https://us-central1-twenty-for-one.cloudfunctions.net/getPeople')
         .then(response => {
-          if(response.data.length != 0){
+          if(response.data.length !== 0){
             console.log(response.data);
 
             var h = response.data.filter(function(person) {
-              return person["age_group"] == 2;
+              return person["age_group"] === '2';
             });
 
             var nh = response.data.filter(function(person) {
-              return person["age_group"] == 1;
+              return person["age_group"] === '1';
             });
 
             this.setState({ 

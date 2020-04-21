@@ -3,29 +3,16 @@ import TimeAgo from 'react-timeago'
 import {
   Table,
   TableRow,
-  TableHead,
   TableBody,
   TableCell,
 } from "@material-ui/core";
 
 // components
-import { Button } from "../../../../components/Wrappers";
-
 import { Typography } from "../../../../components/Wrappers";
-
-import purple from '@material-ui/core/colors/purple';
 
 import {  TwitterShareButton, TwitterIcon } from 'react-share';
 
 import {Circle} from 'react-shapes';
-
-
-
-const states = {
-  sent: "success",
-  pending: "warning",
-  declined: "secondary",
-};
 
 export default function TableComponent({ data }) {
   var keys = Object.keys(data[0]).map(i => i.toUpperCase());
@@ -55,7 +42,7 @@ export default function TableComponent({ data }) {
 
             </TableCell>
 
-            <TableCell align='right'>
+            <TableCell align='center'>
                   <TwitterShareButton url="https://www.twentyforone.com" title={helper + " delivered groceries to " + needed_help + " using Twenty for One!"} children={<TwitterIcon size={32} round={true} />} />
 
 
