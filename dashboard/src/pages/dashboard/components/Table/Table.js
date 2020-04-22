@@ -36,7 +36,7 @@ export default function TableComponent({ data }) {
             </div>
 
             <div>
-                        <Typography> Austin, TX • <TimeAgo date={create_date}/>  </Typography>
+                        <Typography> <TimeAgo date={create_date}/>  </Typography>
 
             </div>
 
