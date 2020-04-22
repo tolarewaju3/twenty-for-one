@@ -29,11 +29,11 @@ export default {
   table: [
     {
     "create_date": "2020-04-10 15:10:00+00:00",
-    "message": "Tyler"
+    "message": "Tyler signed up for Twenty for One!"
     },
     {
     "create_date": "2020-04-13 15:10:00+00:00",
-    "helper": "Olu"
+    "message": "Olu helped deliver groceries to T.O"
     }
   ]
 };
