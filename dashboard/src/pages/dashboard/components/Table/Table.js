@@ -22,7 +22,7 @@ export default function TableComponent({ data }) {
   return (
     <Table className="mb-0">
       <TableBody>
-        {data.map(({ done_date, helper, needed_help }) => (
+        {data.map(({ create_date, message }) => (
           <TableRow>
           <TableCell padding='none' align='center'>
             &nbsp;&nbsp;<Circle r={8} fill={{color:'#12c457'}} />
@@ -31,19 +31,19 @@ export default function TableComponent({ data }) {
             <div>
 
 
-             <Typography variant="h6" weight="bold"> {helper} delivered groceries to {needed_help}  </Typography>
+             <Typography variant="h6" weight="bold"> {message}  </Typography>
 
             </div>
 
             <div>
-                        <Typography> Austin, TX • <TimeAgo date={done_date}/>  </Typography>
+                        <Typography> Austin, TX • <TimeAgo date={create_date}/>  </Typography>
 
             </div>
 
             </TableCell>
 
             <TableCell align='center'>
-                  <TwitterShareButton url="https://www.twentyforone.com" title={helper + " delivered groceries to " + needed_help + " using Twenty for One!"} children={<TwitterIcon size={32} round={true} />} />
+                  <TwitterShareButton url="https://www.twentyforone.com" title={message + " on Twenty for One!"} children={<TwitterIcon size={32} round={true} />} />
 
 
             </TableCell>

@@ -28,14 +28,12 @@ export default {
   ],
   table: [
     {
-    "done_date": "2020-04-10 15:10:00+00:00",
-    "helper": "Tyler",
-    "needed_help": "TiOluwa",
+    "create_date": "2020-04-10 15:10:00+00:00",
+    "message": "Tyler"
     },
     {
-    "done_date": "2020-04-13 15:10:00+00:00",
-    "helper": "Olu",
-    "needed_help": "TiOluwa",
+    "create_date": "2020-04-13 15:10:00+00:00",
+    "helper": "Olu"
     }
   ]
 };

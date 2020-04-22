@@ -32,46 +32,39 @@ class Dashboard extends Component{
     constructor(props) {
       super(props);
       this.state = {
-        deliveries: mock.table,
+        events: mock.table,
+        deliveries: [],
         helpers: [],
         needing_help: []
       };
     }
 
-    buildFeed(){
-      console.log('hi there')
-    }
-
 
     componentDidMount(){
-      
-      axios.get('https://us-central1-twenty-for-one.cloudfunctions.net/getDeliveries')
-        .then(response => {
-          if(response.data.length !== 0){
-            console.log(response.data);
-            this.setState({ deliveries: response.data });
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
+  
 
-      axios.get('https://us-central1-twenty-for-one.cloudfunctions.net/getPeople')
+      axios.get('https://us-central1-twenty-for-one.cloudfunctions.net/getEvents')
         .then(response => {
           if(response.data.length !== 0){
             console.log(response.data);
 
-            var h = response.data.filter(function(person) {
-              return person["age_group"] === '2';
+            var h = response.data.filter(function(event) {
+              return event["type"] === 'helperSignup';
             });
 
-            var nh = response.data.filter(function(person) {
-              return person["age_group"] === '1';
+            var nh = response.data.filter(function(event) {
+              return event["type"] === 'helpeeSignup';
+            });
+
+            var d = response.data.filter(function(event) {
+              return event["type"] === 'delivery';
             });
 
             this.setState({ 
               helpers: h ,
-              needing_help : nh
+              needing_help : nh,
+              deliveries: d,
+              events: response.data
             });
           }
         })
@@ -164,7 +157,7 @@ class Dashboard extends Component{
             bodyClass={classes.tableWidget}
             headerClass={classes.widgetHeader}
           >
-            <Table data={this.state.deliveries} />
+            <Table data={this.state.events} />
           </Widget>
         </Grid>
 
