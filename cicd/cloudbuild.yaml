@@ -1,0 +1,42 @@
+steps:
+#step 1
+- name: 'gcr.io/cloud-builders/docker' 
+  entrypoint: 'bash'
+  args: [
+   '-c', 
+   'docker pull gcr.io/$PROJECT_ID/twenty-for-one:latest || exit 0'
+  ]
+#step 2
+- name: gcr.io/cloud-builders/docker
+  id:
+  args: [
+   'build', 
+   '-t', 
+   'gcr.io/$PROJECT_ID/twenty-for-one:$BRANCH_NAME-$COMMIT_SHA',
+   '-t', 
+   'gcr.io/$PROJECT_ID/twenty-for-one:latest',
+   'dashboard/'
+  ]
+#step 3
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['apply', '-f', 'config/']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=twenty-for-one'
+#step 4
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: [
+   'set', 
+   'image', 
+   'deployment', 
+   'twenty-for-one-deployment', 
+   'twenty-for-one=gcr.io/$PROJECT_ID/twenty-for-one:$BRANCH_NAME-$COMMIT_SHA'
+  ]
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=twenty-for-one'
+# push images to Google Container Registry with tags
+images: [
+   'gcr.io/$PROJECT_ID/twenty-for-one:$BRANCH_NAME-$COMMIT_SHA',
+   'gcr.io/$PROJECT_ID/twenty-for-one:latest'
+  ]
