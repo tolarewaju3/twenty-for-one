@@ -15,7 +15,7 @@ steps:
    'gcr.io/$PROJECT_ID/twenty-for-one:$BRANCH_NAME-$COMMIT_SHA',
    '-t', 
    'gcr.io/$PROJECT_ID/twenty-for-one:latest',
-   '.'
+   '../dashboard/'
   ]
 #step 3
 - name: 'gcr.io/cloud-builders/kubectl'
