@@ -5,7 +5,7 @@ metadata:
   labels:
     app: twenty-for-one
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: twenty-for-one
