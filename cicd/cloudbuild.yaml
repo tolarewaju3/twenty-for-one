@@ -1,12 +1,12 @@
 steps:
 #step 1
-- name: 'gcr.io/cloud-builders/yarn'
+- name: 'gcr.io/cloud-builders/yarn:node-10.10.0'
   args: [
    '--cwd',
    'dashboard/',
    'install'
   ]
-- name: 'gcr.io/cloud-builders/yarn'
+- name: 'gcr.io/cloud-builders/yarn:node-10.10.0'
   args: [
    '--cwd',
    'dashboard/',
