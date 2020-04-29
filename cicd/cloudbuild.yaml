@@ -9,7 +9,7 @@ steps:
 - name: 'gcr.io/cloud-builders/yarn'
   args: [
    '--cwd',
-   'dashboard/'
+   'dashboard/',
    'build'
   ]
 #step 2
