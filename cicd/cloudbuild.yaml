@@ -6,6 +6,11 @@ steps:
    '-c', 
    'docker pull gcr.io/$PROJECT_ID/twenty-for-one:latest || exit 0'
   ]
+- name: 'gcr.io/cloud-builders/yarn'
+  args: [
+   'build',
+   'dashboard/'
+  ]
 #step 2
 - name: gcr.io/cloud-builders/docker
   id:
