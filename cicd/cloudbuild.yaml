@@ -1,10 +1,10 @@
 steps:
 #step 1
-- name: 'gcr.io/cloud-builders/docker' 
-  entrypoint: 'bash'
+- name: 'gcr.io/cloud-builders/yarn'
   args: [
-   '-c', 
-   'docker pull gcr.io/$PROJECT_ID/twenty-for-one:latest || exit 0'
+   '--cwd',
+   'dashboard/',
+   'install'
   ]
 - name: 'gcr.io/cloud-builders/yarn'
   args: [
