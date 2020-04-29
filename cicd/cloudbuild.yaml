@@ -8,8 +8,9 @@ steps:
   ]
 - name: 'gcr.io/cloud-builders/yarn'
   args: [
-   'build',
+   '--cwd',
    'dashboard/'
+   'build'
   ]
 #step 2
 - name: gcr.io/cloud-builders/docker
